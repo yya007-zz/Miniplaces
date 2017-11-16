@@ -112,8 +112,20 @@ opt_data_val = {
     'randomize': False
     }
 
+opt_data_test = {
+    #'data_h5': 'miniplaces_256_val.h5',
+    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+    'load_size': load_size,
+    'fine_size': fine_size,
+    'data_mean': data_mean,
+    'randomize': False
+    }
+
 loader_train = DataLoaderDisk(**opt_data_train)
 loader_val = DataLoaderDisk(**opt_data_val)
+loader_test = DataLoaderDisk(**opt_data_test)
+
 #loader_train = DataLoaderH5(**opt_data_train)
 #loader_val = DataLoaderH5(**opt_data_val)
 
@@ -208,3 +220,19 @@ with tf.Session() as sess:
     acc1_total /= num_batch
     acc5_total /= num_batch
     print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
+
+    # Predict on the test set
+    print('Evaluation on the whole test set...')
+    num_batch = loader_test.size()//batch_size
+    loader_test.reset()
+    result=[]
+    for i in range(num_batch):
+        images_batch, labels_batch = loader_test.next_batch(batch_size) 
+        logits = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
+        logits = np.array(logits)
+        for ind in range(logits.shape[0]):
+            top5 = np.argsort(logits,axis=0)[-5:][::-1]
+            result.append(top5)
+    result=np.array(result)
+    np.save(path_save+"/test.npy",result)
+        

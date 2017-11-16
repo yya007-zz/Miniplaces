@@ -1,4 +1,6 @@
 ssh -i "key1.pem" ubuntu@ec2-18-221-95-43.us-east-2.compute.amazonaws.com
+
+#from local to ssh
 scp -i "key1.pem" -r /Users/yuangyao/Documents/Research/miniplaces.tar.gz 
 
 ubuntu@ec2-18-221-95-43.us-east-2.compute.amazonaws.com:/home/ubuntu
