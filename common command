@@ -1,0 +1,11 @@
+ssh -i "key1.pem" ubuntu@ec2-18-221-95-43.us-east-2.compute.amazonaws.com
+scp -i "key1.pem" -r /Users/yuangyao/Documents/Research/miniplaces.tar.gz 
+
+ubuntu@ec2-18-221-95-43.us-east-2.compute.amazonaws.com:/home/ubuntu
+
+tar xvzf file-1.0.tar.gz
+
+cp -r /home/ubuntu/new/miniplaces/data/images  /home/ubuntu/final/Miniplaces/data/ 
+
+
+cp -r /home/ubuntu/new/miniplaces/model/save  /home/ubuntu/final/Miniplaces/save/
