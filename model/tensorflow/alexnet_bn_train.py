@@ -181,10 +181,12 @@ with tf.Session() as sess:
         step += 1
         
         # Save model
-        if step % step_save == 0:
+        if step % step_save == 0 or step==1:
             saver.save(sess, path_save, global_step=step)
             print("Model saved at Iter %d !" %(step))
+
         
+
     print("Optimization Finished!")
 
 
