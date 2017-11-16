@@ -5,7 +5,8 @@ from tensorflow.contrib.layers.python.layers import batch_norm
 from DataLoader import *
 
 # Dataset Parameters
-batch_size = 64
+
+batch_size = 256
 load_size = 256
 fine_size = 224
 c = 3
