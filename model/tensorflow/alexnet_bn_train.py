@@ -233,7 +233,7 @@ with tf.Session() as sess:
     if test:
         # Predict on the test set
         print('Evaluation on the test set...')
-        num_batch = loader_test.size()//batch_size
+        num_batch = loader_test.size()//batch_size+1
         loader_test.reset()
         result=[]
         for i in range(num_batch):
