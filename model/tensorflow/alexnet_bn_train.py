@@ -105,7 +105,8 @@ opt_data_train = {
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
-    'randomize': True
+    'randomize': True，
+    'perm' : True
     }
 opt_data_val = {
     #'data_h5': 'miniplaces_256_val.h5',
@@ -114,7 +115,8 @@ opt_data_val = {
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
-    'randomize': False
+    'randomize': False，
+    'perm' : False
     }
 
 opt_data_test = {
@@ -124,7 +126,8 @@ opt_data_test = {
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
-    'randomize': False
+    'randomize': False,
+    'perm' : False
     }
 
 loader_train = DataLoaderDisk(**opt_data_train)
@@ -242,6 +245,6 @@ with tf.Session() as sess:
             for ind in range(l.shape[0]):
                 top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
-        result=np.array(result)
+        result=np.array(result[:10000,:])
         print result.shape
         save(result, path_save)        

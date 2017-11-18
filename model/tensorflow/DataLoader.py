@@ -73,6 +73,7 @@ class DataLoaderDisk(object):
         self.fine_size = int(kwargs['fine_size'])
         self.data_mean = np.array(kwargs['data_mean'])
         self.randomize = kwargs['randomize']
+        self.perm = kwargs['perm']
         self.data_root = os.path.join(kwargs['data_root'])
 
         # read data info from lists
@@ -89,9 +90,10 @@ class DataLoaderDisk(object):
         print('# Images found:', self.num)
 
         # permutation
-        perm = np.random.permutation(self.num) 
-        self.list_im[:, ...] = self.list_im[perm, ...]
-        self.list_lab[:] = self.list_lab[perm, ...]
+        if self.perm:
+            perm = np.random.permutation(self.num) 
+            self.list_im[:, ...] = self.list_im[perm, ...]
+            self.list_lab[:] = self.list_lab[perm, ...]
 
         self._idx = 0
         
