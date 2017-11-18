@@ -20,7 +20,8 @@ training_iters = 50000
 step_display = 50
 step_save = 10000
 path_save = '../../save/exp2'
-start_from = '../../save/exp2-20000'
+num = 20000
+start_from = '../../save/exp2-'+str(num)
 train = False;
 validation = False;
 test = True;
@@ -247,5 +248,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        print result.shape
-        save(result, path_save)        
+        save(result, "./-"+str(num))
