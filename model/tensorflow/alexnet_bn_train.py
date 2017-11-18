@@ -237,6 +237,7 @@ with tf.Session() as sess:
             images_batch, labels_batch = loader_test.next_batch(batch_size) 
             l = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
             l = np.array(l)
+            l = l.reshape(l.shape[1:])
             print l.shape
             for ind in range(l.shape[0]):
                 top5 = np.argsort(l[ind])[-5:][::-1]
