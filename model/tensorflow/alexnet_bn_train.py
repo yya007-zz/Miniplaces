@@ -213,7 +213,7 @@ with tf.Session() as sess:
     if validation:
         # Evaluate on the whole validation set
         print('Evaluation on the whole validation set...')
-        num_batch = loader_val.size()//batch_size
+        num_batch = loader_val.size()//batch_size+1
         acc1_total = 0.
         acc5_total = 0.
         loader_val.reset()
