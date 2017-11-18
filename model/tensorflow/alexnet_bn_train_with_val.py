@@ -19,12 +19,13 @@ dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 10000
-path_save = '../../save/exp2'
-num = 40000 #the model chosen to run on test data
-start_from = '../../save/exp2-'+str(num)
-train = False;
+path_save = '../../save/exp3'
+# num = 40000 #the model chosen to run on test data
+# start_from = '../../save/exp2-'+str(num)
+start_from = ''
+train = True;
 validation = False;
-test = True;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
