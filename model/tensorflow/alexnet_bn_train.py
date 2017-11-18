@@ -241,4 +241,5 @@ with tf.Session() as sess:
                 top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
         result=np.array(result)
+        print result.shape
         save(result, path_save)        
