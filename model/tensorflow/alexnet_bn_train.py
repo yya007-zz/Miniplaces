@@ -245,6 +245,7 @@ with tf.Session() as sess:
             for ind in range(l.shape[0]):
                 top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
-        result=np.array(result[:10000,:])
+        result=np.array(result)
+        result=result[:10000,:]
         print result.shape
         save(result, path_save)        
