@@ -88,7 +88,6 @@ def alexnet(x, keep_dropout, train_phase):
     fc6 = batch_norm_layer(fc6, train_phase, 'bn6')
     fc6 = tf.nn.relu(fc6)
     fc6 = tf.nn.dropout(fc6, keep_dropout)
-    fc6 = 
     
     # FC + ReLU + Dropout
     fc7 = tf.matmul(fc6, weights['wf7'])
