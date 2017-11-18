@@ -235,10 +235,10 @@ with tf.Session() as sess:
         result=[]
         for i in range(num_batch):
             images_batch, labels_batch = loader_test.next_batch(batch_size) 
-            logits = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
-            logits = np.array(logits)
-            for ind in range(logits.shape[0]):
-                top5 = np.argsort(logits[ind])[-5:][::-1]
+            l = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
+            l = np.array(l)
+            for ind in range(l.shape[0]):
+                top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
         result=np.array(result)
         save(result, path_save)        
