@@ -20,7 +20,8 @@ l2_const = 0.0001
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
-step_save = 2500
+step_save = 2000
+best_save = 500
 path_save = '../../save/noise-7500'
 num = 40000 #the model chosen to run on test data
 start_from = '../../save/noise-7500'
@@ -174,7 +175,7 @@ with tf.Session() as sess:
     train_acc5 = []
     val_acc1 = []
     val_acc5 = []
-    best = 0.72
+    best = 0.73
 
     # Initialization
     if len(start_from)>1:
@@ -215,17 +216,6 @@ with tf.Session() as sess:
 
                 val_acc1.append(acc1)
                 val_acc5.append(acc5)
-
-                if acc5>best:
-                    best = acc5
-                    best_model = True
-
-            if best_model:
-                history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
-                np.save('noise-history-'+str(step)+'.npy', history)
-
-                saver.save(sess, path_save, global_step=1)
-                print("Model saved at Iter %d !" %(step)) 
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
@@ -233,7 +223,34 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if step % step_save == 0:
+            save_model = False
+            if step % best_save == 0:
+                num_batch = loader_val.size()//batch_size+1
+                acc1_total = 0.
+                acc5_total = 0.
+                loader_val.reset()
+                for i in range(num_batch):
+                    images_batch, labels_batch = loader_val.next_batch(batch_size)    
+                    acc1, acc5 = sess.run([accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
+                    acc1_total += acc1
+                    acc5_total += acc5
+                    
+                    print("Validation Accuracy Top1 = " + \
+                          "{:.4f}".format(acc1) + ", Top5 = " + \
+                          "{:.4f}".format(acc5))
+
+                acc1_total /= num_batch
+                acc5_total /= num_batch
+
+                if acc5_total > best:
+                    save_model = True
+                    best = acc5_total
+                    np.save('history-'+str(step)+'.npy', history)
+
+                    saver.save(sess, path_save, global_step=1)
+                    print("Model saved at Iter %d !" %(step)) 
+
+            if step % step_save == 0 and not save_model:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
                 np.save('history-'+str(step)+'.npy', history)
 
