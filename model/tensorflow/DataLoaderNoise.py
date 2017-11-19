@@ -55,7 +55,7 @@ class DataLoaderDiskRandomize(object):
                 rotation = np.random.random_integers(0, 1)
                 if rotation>0:
                     angle = np.random.random_integers(-30, 30)
-                    # image = rotate(image, angle, reshape=False)
+                    image = rotate(image, angle, reshape=False)
                 offset_h = np.random.random_integers(0, self.load_size-self.fine_size)
                 offset_w = np.random.random_integers(0, self.load_size-self.fine_size)
             else:
