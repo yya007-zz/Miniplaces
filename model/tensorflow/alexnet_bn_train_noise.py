@@ -21,9 +21,9 @@ dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 2500
-path_save = '../../save/noise'
+path_save = '../../save/noise-10000'
 num = 40000 #the model chosen to run on test data
-start_from = '../../save/pre10000-reg25-2500'
+start_from = '../../save/noise-10000'
 train = True;
 validation = True;
 test = False;
@@ -189,16 +189,18 @@ with tf.Session() as sess:
             # Load a batch of training data
             images_batch, labels_batch = loader_train.next_batch(batch_size)
             best_model = False
-            
+
             if step % step_display == 0:
                 print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
                 # Calculate batch loss and accuracy on training set
-                l, acc1, acc5 = sess.run([loss, accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
+                l, acc1, acc5, penalty = sess.run([loss, accuracy1, accuracy5, regularizer], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
                 print("-Iter " + str(step) + ", Training Loss= " + \
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
+                print("-Iter " + str(step) + ", Training penalty= " + \
+                      "{:.6f}".format(penalty))
 
                 train_acc1.append(acc1)
                 train_acc5.append(acc5)
@@ -253,6 +255,7 @@ with tf.Session() as sess:
             acc1, acc5 = sess.run([accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
             acc1_total += acc1
             acc5_total += acc5
+            
             print("Validation Accuracy Top1 = " + \
                   "{:.4f}".format(acc1) + ", Top5 = " + \
                   "{:.4f}".format(acc5))
