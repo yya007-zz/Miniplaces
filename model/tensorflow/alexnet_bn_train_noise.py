@@ -217,6 +217,13 @@ with tf.Session() as sess:
                 if acc5>best:
                     best = acc5
                     best_model = True
+
+            if best_model:
+                history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
+                np.save('noise-history-'+str(step)+'.npy', history)
+
+                saver.save(sess, path_save, global_step=0)
+                print("Model saved at Iter %d !" %(step)) 
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
@@ -224,12 +231,13 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if best_model:
+            if step % step_save == 0:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
-                np.save('noise-history-'+str(step)+'.npy', history)
+                np.save('history-'+str(step)+'.npy', history)
 
                 saver.save(sess, path_save, global_step=step)
                 print("Model saved at Iter %d !" %(step))       
+   
 
         print("Optimization Finished!")
 
