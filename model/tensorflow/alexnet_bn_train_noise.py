@@ -222,7 +222,7 @@ with tf.Session() as sess:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
                 np.save('noise-history-'+str(step)+'.npy', history)
 
-                saver.save(sess, path_save, global_step=0)
+                saver.save(sess, path_save, global_step=1)
                 print("Model saved at Iter %d !" %(step)) 
             
             # Run optimization op (backprop)
