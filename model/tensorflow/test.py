@@ -20,11 +20,11 @@ training_iters = 50000
 step_display = 50
 step_save = 10000
 path_save = '../../save/noise'
-num = 10000 #the model chosen to run on test data
+num = 7500 #the model chosen to run on test data
 start_from = '../../save/noise-'+str(num)
 train = False;
 validation = True;
-test = True;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
