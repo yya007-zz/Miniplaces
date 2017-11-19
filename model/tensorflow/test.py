@@ -248,4 +248,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./exp3-"+str(num))
+        save(result, "./exp2-"+str(num))

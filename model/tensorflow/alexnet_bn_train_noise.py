@@ -16,13 +16,14 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.001
+l2_const = 0.0025
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 2500
 path_save = '../../save/noise'
 num = 40000 #the model chosen to run on test data
-start_from = ''
+start_from = '../../save/pre10000-reg25-2500'
 train = True;
 validation = True;
 test = False;
@@ -97,7 +98,7 @@ def alexnet(x, keep_dropout, train_phase):
     # Output FC
     out = tf.add(tf.matmul(fc7, weights['wo']), biases['bo'])
     
-    return out
+    return out, weights
 
 # Construct dataloader
 opt_data_train = {
@@ -147,10 +148,11 @@ keep_dropout = tf.placeholder(tf.float32)
 train_phase = tf.placeholder(tf.bool)
 
 # Construct model
-logits = alexnet(x, keep_dropout, train_phase)
+logits, w = alexnet(x, keep_dropout, train_phase)
 
 # Define loss and optimizer
-loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
+regularizer = tf.nn.l2_loss(w["wf6"]) + tf.nn.l2_loss(w["wf7"]);
+loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)) + regularizer * l2_const;
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
@@ -172,7 +174,7 @@ with tf.Session() as sess:
     train_acc5 = []
     val_acc1 = []
     val_acc5 = []
-    best = 0.7
+    best = 0.72
 
     # Initialization
     if len(start_from)>1:
