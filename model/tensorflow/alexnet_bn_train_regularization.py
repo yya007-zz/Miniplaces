@@ -15,7 +15,7 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.001
-l2_const = 0.01
+l2_const = 0.005
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
@@ -23,7 +23,8 @@ step_save = 2500
 path_save = '../../save/exp4'
 # num = 40000 #the model chosen to run on test data
 # start_from = '../../save/exp2-'+str(num)
-start_from = '../../save/exp2-20000'
+# start_from = '../../save/exp2-20000'
+start_from = ''
 train = True;
 validation = False;
 test = False;
