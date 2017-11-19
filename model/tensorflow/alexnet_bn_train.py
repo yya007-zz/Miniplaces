@@ -21,10 +21,10 @@ step_display = 50
 step_save = 10000
 path_save = '../../save/exp2'
 num = 40000 #the model chosen to run on test data
-start_from = '../../save/exp2-'+str(num)
-train = False;
-validation = False;
-test = True;
+start_from = ''
+train = True;
+validation = True;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
@@ -242,7 +242,7 @@ with tf.Session() as sess:
             l = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
             l = np.array(l)
             l = l.reshape(l.shape[1:])
-            print l.shape
+            print(l.shape)
             for ind in range(l.shape[0]):
                 top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
