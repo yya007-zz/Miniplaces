@@ -23,7 +23,7 @@ path_save = '../../save/noise'
 num = 10000 #the model chosen to run on test data
 start_from = '../../save/noise-'+str(num)
 train = False;
-validation = False;
+validation = True;
 test = True;
 
 
