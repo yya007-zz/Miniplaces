@@ -21,9 +21,9 @@ dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 2500
-path_save = '../../save/noise-10000'
+path_save = '../../save/noise-7500'
 num = 40000 #the model chosen to run on test data
-start_from = '../../save/noise-10000'
+start_from = '../../save/noise-7500'
 train = True;
 validation = True;
 test = False;
@@ -200,7 +200,7 @@ with tf.Session() as sess:
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
                 print("-Iter " + str(step) + ", Training penalty= " + \
-                      "{:.6f}".format(penalty))
+                      "{:.6f}".format(penalty*l2_const))
 
                 train_acc1.append(acc1)
                 train_acc5.append(acc5)
