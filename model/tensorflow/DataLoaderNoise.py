@@ -44,11 +44,11 @@ class DataLoaderDiskRandomize(object):
             while self._idx>len(self.list_im):
                 self._idx-=len(self.list_im)
             image = scipy.misc.imread(self.list_im[self._idx])
+            image = tf.image.random_brightness(image, max_delta = 30)
             image = scipy.misc.imresize(image, (self.load_size, self.load_size))
             image = image.astype(np.float32)/255.
             image = image - self.data_mean
             if self.randomize:
-                image = tf.image.random_brightness(image, max_delta = 30)
                 flip = np.random.random_integers(0, 1)
                 if flip>0:
                     image = image[:,::-1,:]
