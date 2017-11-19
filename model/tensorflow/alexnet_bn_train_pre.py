@@ -174,6 +174,7 @@ with tf.Session() as sess:
     train_acc5 = []
     val_acc1 = []
     val_acc5 = []
+    best = 0.72
 
     # Initialization
     if len(start_from)>1:
@@ -184,6 +185,7 @@ with tf.Session() as sess:
     step = 0
 
     if train:
+        best_model = False
         while step < training_iters:
             # Load a batch of training data
             images_batch, labels_batch = loader_train.next_batch(batch_size)
@@ -211,6 +213,10 @@ with tf.Session() as sess:
 
                 val_acc1.append(acc1)
                 val_acc5.append(acc5)
+
+                if acc5>best:
+                    best = acc5
+                    best_model = True
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
@@ -218,9 +224,9 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if step % step_save == 0 or step==1:
+            if best_model:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
-                np.save('pre10000-reg25-history-'+str(step)+'.npy', history)
+                np.save('pre-history-'+str(step)+'.npy', history)
 
                 saver.save(sess, path_save, global_step=step)
                 print("Model saved at Iter %d !" %(step))       

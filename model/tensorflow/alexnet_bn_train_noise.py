@@ -222,7 +222,7 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if step % step_save == 0 or step==1 or best_model:
+            if best_model:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
                 np.save('noise-history-'+str(step)+'.npy', history)
 
