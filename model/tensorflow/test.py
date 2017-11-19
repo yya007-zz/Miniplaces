@@ -19,9 +19,9 @@ dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 10000
-path_save = '../../save/exp2'
+path_save = '../../save/noise'
 num = 10000 #the model chosen to run on test data
-start_from = '../../save/exp2-'+str(num)
+start_from = '../../save/noise-'+str(num)
 train = False;
 validation = False;
 test = True;
@@ -248,4 +248,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./exp2-"+str(num))
+        save(result, "./exp4-noise-"+str(num))
