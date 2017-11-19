@@ -3,7 +3,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.contrib.layers.python.layers import batch_norm
 from DataLoader import *
-from DataLoaderNoise import DataLoaderDiskRandomize
 from save import save
 
 # Dataset Parameters
@@ -16,12 +15,12 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.001
-l2_const = 0.005
+l2_const = 0.0025
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 2500
-path_save = '../../save/noise30'
+path_save = '../../save/pre10000-reg25'
 # num = 40000 #the model chosen to run on test data
 # start_from = '../../save/exp2-'+str(num)
 # start_from = '../../save/exp2-20000'
@@ -135,7 +134,7 @@ opt_data_test = {
     'perm' : False
     }
 
-loader_train = DataLoaderDiskRandomize(**opt_data_train)
+loader_train = DataLoaderDisk(**opt_data_train)
 loader_val = DataLoaderDisk(**opt_data_val)
 loader_test = DataLoaderDisk(**opt_data_test)
 
@@ -221,7 +220,7 @@ with tf.Session() as sess:
             # Save model
             if step % step_save == 0 or step==1:
                 history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
-                np.save('noise30-history-'+str(step)+'.npy', history)
+                np.save('pre10000-reg25-history-'+str(step)+'.npy', history)
 
                 saver.save(sess, path_save, global_step=step)
                 print("Model saved at Iter %d !" %(step))       
@@ -265,4 +264,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./noise30-"+str(num))
+        save(result, "./pre10000-reg25-"+str(num))
