@@ -16,7 +16,7 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.001
-l2_const = 0.0025
+l2_const = 0.00025
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
