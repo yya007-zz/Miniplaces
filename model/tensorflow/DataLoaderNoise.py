@@ -2,6 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 import scipy.misc
+from scipy.ndimage import rotate
 import h5py
 np.random.seed(123)
 
@@ -51,10 +52,10 @@ class DataLoaderDiskRandomize(object):
                 flip = np.random.random_integers(0, 1)
                 if flip>0:
                     image = image[:,::-1,:]
-                rotate = np.random.random_integers(0, 1)
-                if rotate>0:
+                rotation = np.random.random_integers(0, 1)
+                if rotation>0:
                     angle = np.random.random_integers(-30, 30)
-                    image = scipy.misc.rotate(image, angle, reshape=False)
+                    image = rotate(image, angle, reshape=False)
                 offset_h = np.random.random_integers(0, self.load_size-self.fine_size)
                 offset_w = np.random.random_integers(0, self.load_size-self.fine_size)
             else:
