@@ -185,10 +185,10 @@ with tf.Session() as sess:
     step = 0
 
     if train:
-        best_model = False
         while step < training_iters:
             # Load a batch of training data
             images_batch, labels_batch = loader_train.next_batch(batch_size)
+            best_model = False
             
             if step % step_display == 0:
                 print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
