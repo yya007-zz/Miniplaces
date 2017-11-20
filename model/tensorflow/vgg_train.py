@@ -387,7 +387,7 @@ train_phase = tf.placeholder(tf.bool)
 # Launch the graph
 with tf.Session() as sess:
     # Construct model
-    vgg = vgg16(x, 'vgg16_weights.npz', sess)
+    vgg = vgg16(x, './vgg16_weights.npz', sess)
 
     # Define loss and optimizer
     loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=vgg))
