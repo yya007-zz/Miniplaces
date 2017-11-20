@@ -23,8 +23,8 @@ path_save = '../../save/noise'
 num = 2000 #the model chosen to run on test data
 start_from = '../../save/noise-7500-'+str(num)
 train = False;
-validation = True;
-test = False;
+validation = False;
+test = True;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
