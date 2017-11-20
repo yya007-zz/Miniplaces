@@ -20,11 +20,11 @@ training_iters = 50000
 step_display = 50
 step_save = 10000
 path_save = '../../save/noise'
-num = 7500 #the model chosen to run on test data
-start_from = '../../save/noise-'+str(num)
+num = 8000 #the model chosen to run on test data
+start_from = '../../save/noise-7500'+str(num)
 train = False;
-validation = False;
-test = True;
+validation = True;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
@@ -248,4 +248,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./exp4-noise-"+str(num))
+        save(result, "./exp5-noise-7500"+str(num))
