@@ -1,3 +1,4 @@
 data/images/*
 data/objects/*
 save/*
+model/tensorflow/vgg16_weights.npz
