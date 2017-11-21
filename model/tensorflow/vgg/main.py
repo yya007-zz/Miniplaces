@@ -11,7 +11,7 @@ from save import *
 # Training Parameters
 learning_rate = 0.00001
 training_iters = 25000
-batch_size = 64
+batch_size = 32
 step_display = 100
 step_save = 1000
 exp_name = 'exp4'
