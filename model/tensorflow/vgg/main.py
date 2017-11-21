@@ -18,8 +18,8 @@ exp_name = 'exp4'
 num = ''
 
 train = True
-validation = True
-test = True
+validation = False
+test = False
 
 path_save = './save/'+exp_name+'/'
 start_from=''
