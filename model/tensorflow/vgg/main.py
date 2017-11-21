@@ -146,19 +146,19 @@ with tf.Session() as sess:
                       "{:.4f}".format(acc5))
                 train_accs.append(acc5)
 
-                acc1, acc5=validation()
-                val_accs.append(acc5)
+                # acc1, acc5=validation()
+                # val_accs.append(acc5)
 
-                fig = plt.figure()
-                a=np.arange(1,len(val_accs)+1,1)
-                plt.plot(a,train_accs,'-',label='Training')
-                plt.plot(a,val_accs,'-',label='Validation')
-                plt.xlabel("Iteration")
-                plt.ylabel("Accuracy")
-                plt.legend()
-                fig.savefig("./fig/pic_"+str(exp_name)+".png")   # save the figure to file
-                plt.close(fig)
-                print "finish saving figure to view"
+                # fig = plt.figure()
+                # a=np.arange(1,len(val_accs)+1,1)
+                # plt.plot(a,train_accs,'-',label='Training')
+                # plt.plot(a,val_accs,'-',label='Validation')
+                # plt.xlabel("Iteration")
+                # plt.ylabel("Accuracy")
+                # plt.legend()
+                # fig.savefig("./fig/pic_"+str(exp_name)+".png")   # save the figure to file
+                # plt.close(fig)
+                # print "finish saving figure to view"
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
@@ -166,7 +166,7 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if step % step_save == 0 or step==1:
+            if step % step_save == 0:
                 saver.save(sess, path_save, global_step=step)
                 print("Model saved at Iter %d !" %(step))
         print("Optimization Finished!")
