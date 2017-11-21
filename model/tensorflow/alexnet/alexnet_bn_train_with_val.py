@@ -19,12 +19,13 @@ dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
 step_save = 10000
-path_save = '../../save/noise'
-num = 2000 #the model chosen to run on test data
-start_from = '../../save/noise-7500-'+str(num)
-train = False;
-validation = True;
-test = True;
+path_save = '../../save/exp3'
+# num = 40000 #the model chosen to run on test data
+# start_from = '../../save/exp2-'+str(num)
+start_from = ''
+train = True;
+validation = False;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
@@ -102,7 +103,7 @@ def alexnet(x, keep_dropout, train_phase):
 opt_data_train = {
     #'data_h5': 'miniplaces_256_train.h5',
     'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/train.txt', # MODIFY PATH ACCORDINGLY
+    'data_list': '../../data/train_val.txt', # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -248,4 +249,4 @@ with tf.Session() as sess:
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./exp5-noise-7500"+str(num))
+        save(result, "./-"+str(num))

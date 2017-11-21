@@ -15,16 +15,19 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.001
+l2_const = 0.0025
 dropout = 0.5 # Dropout, probability to keep units
 training_iters = 50000
 step_display = 50
-step_save = 10000
-path_save = '../../save/noise'
-num = 2000 #the model chosen to run on test data
-start_from = '../../save/noise-7500-'+str(num)
-train = False;
-validation = True;
-test = True;
+step_save = 2500
+path_save = '../../save/pre10000-reg25'
+# num = 40000 #the model chosen to run on test data
+# start_from = '../../save/exp2-'+str(num)
+# start_from = '../../save/exp2-20000'
+start_from = '../../save/exp2-10000'
+train = True;
+validation = False;
+test = False;
 
 
 def batch_norm_layer(x, train_phase, scope_bn):
@@ -96,7 +99,7 @@ def alexnet(x, keep_dropout, train_phase):
     # Output FC
     out = tf.add(tf.matmul(fc7, weights['wo']), biases['bo'])
     
-    return out
+    return out, weights
 
 # Construct dataloader
 opt_data_train = {
@@ -145,10 +148,11 @@ keep_dropout = tf.placeholder(tf.float32)
 train_phase = tf.placeholder(tf.bool)
 
 # Construct model
-logits = alexnet(x, keep_dropout, train_phase)
+logits, w = alexnet(x, keep_dropout, train_phase)
 
 # Define loss and optimizer
-loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
+regularizer = tf.nn.l2_loss(w["wf6"]) + tf.nn.l2_loss(w["wf7"]);
+loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)) + regularizer * l2_const;
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
@@ -166,6 +170,12 @@ saver = tf.train.Saver()
 
 # Launch the graph
 with tf.Session() as sess:
+    train_acc1 = []
+    train_acc5 = []
+    val_acc1 = []
+    val_acc5 = []
+    best = 0.72
+
     # Initialization
     if len(start_from)>1:
         saver.restore(sess, start_from)
@@ -175,6 +185,7 @@ with tf.Session() as sess:
     step = 0
 
     if train:
+        best_model = False
         while step < training_iters:
             # Load a batch of training data
             images_batch, labels_batch = loader_train.next_batch(batch_size)
@@ -189,6 +200,9 @@ with tf.Session() as sess:
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
 
+                train_acc1.append(acc1)
+                train_acc5.append(acc5)
+
                 # Calculate batch loss and accuracy on validation set
                 images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)    
                 l, acc1, acc5 = sess.run([loss, accuracy1, accuracy5], feed_dict={x: images_batch_val, y: labels_batch_val, keep_dropout: 1., train_phase: False}) 
@@ -196,6 +210,13 @@ with tf.Session() as sess:
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
+
+                val_acc1.append(acc1)
+                val_acc5.append(acc5)
+
+                if acc5>best:
+                    best = acc5
+                    best_model = True
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
@@ -203,11 +224,12 @@ with tf.Session() as sess:
             step += 1
             
             # Save model
-            if step % step_save == 0 or step==1:
-                saver.save(sess, path_save, global_step=step)
-                print("Model saved at Iter %d !" %(step))
+            if best_model:
+                history = np.array([train_acc1, train_acc5, val_acc1, val_acc5])
+                np.save('pre-history-'+str(step)+'.npy', history)
 
-            
+                saver.save(sess, path_save, global_step=step)
+                print("Model saved at Iter %d !" %(step))       
 
         print("Optimization Finished!")
 
@@ -242,10 +264,10 @@ with tf.Session() as sess:
             l = sess.run([logits], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
             l = np.array(l)
             l = l.reshape(l.shape[1:])
-            print l.shape
+            print(l.shape)
             for ind in range(l.shape[0]):
                 top5 = np.argsort(l[ind])[-5:][::-1]
                 result.append(top5)
         result=np.array(result)
         result=result[:10000,:]
-        save(result, "./exp5-noise-7500"+str(num))
+        save(result, "./pre10000-reg25-"+str(num))
