@@ -21,7 +21,7 @@ train = True
 validation = False
 test = False
 
-path_save = './save/'+exp_name+'/'
+path_save = './save-'+exp_name+'/'
 start_from=''
 if len(num)>0:
     start_from = path_save+'-'+num
