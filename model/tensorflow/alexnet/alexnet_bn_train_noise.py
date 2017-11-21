@@ -104,8 +104,8 @@ def alexnet(x, keep_dropout, train_phase):
 # Construct dataloader
 opt_data_train = {
     #'data_h5': 'miniplaces_256_train.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/train.txt', # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/train.txt', # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -115,8 +115,8 @@ opt_data_train = {
 
 opt_data_val = {
     #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/val.txt',   # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -126,8 +126,8 @@ opt_data_val = {
 
 opt_data_test = {
     #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
