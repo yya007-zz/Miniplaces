@@ -11,7 +11,7 @@ from save import *
 # Training Parameters
 learning_rate = 0.00001
 training_iters = 25000
-batch_size = 32
+batch_size = 64
 step_display = 100
 step_save = 1000
 exp_name = 'exp4'
@@ -119,7 +119,6 @@ with tf.Session() as sess:
             acc1, acc5 = sess.run([accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False})
             acc1_total += acc1
             acc5_total += acc5
-            print("Validation Accuracy Top1 = " + "{:.4f}".format(acc1) + ", Top5 = " + "{:.4f}".format(acc5))
         acc1_total /= num_batch
         acc5_total /= num_batch
         t=int(time.time()-t)
