@@ -32,6 +32,7 @@ fine_size = 224
 c = 3
 data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 dropout = 0.5 # Dropout, probability to keep units
+
 # Construct dataloader
 opt_data_train = {
     #'data_h5': 'miniplaces_256_train.h5',
@@ -66,7 +67,7 @@ opt_data_test = {
     'perm' : False
     }
 
-loader_train = DataLoaderDisk(**opt_data_train)
+loader_train = DataLoaderDiskRandomize(**opt_data_train)
 loader_val = DataLoaderDisk(**opt_data_val)
 loader_test = DataLoaderDisk(**opt_data_test)
 
@@ -83,7 +84,7 @@ model = vgg_model(x, y, keep_dropout, train_phase)
 # Define loss and optimizer
 logits= model.logits
 loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
-# loss = model.loss
+loss1 = model.loss
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
@@ -140,11 +141,13 @@ with tf.Session() as sess:
                 print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
                 # Calculate batch loss and accuracy on training set
-                l, acc1, acc5 = sess.run([loss, accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
+                l, l1, acc1, acc5 = sess.run([loss, loss1, accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
                 print("-Iter " + str(step) + ", Training Loss= " + \
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
+
+                print(l1)
 
                 # acc1, acc5=validation()
                 # val_accs.append(acc5)
