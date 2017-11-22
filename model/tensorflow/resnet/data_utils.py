@@ -1,33 +1,19 @@
 from torch.utils.data import Dataset
 from scipy.misc import imread
-import os
 
-class Miniplaces(Dataset):
-  def __init__(self, data_path, split='train', transform=None):
+class MiniPlaces(Dataset):
+  def __init__(self, data_path, category):
     self.imgs = []
     self.labels = []
-    if split == 'train' or split == 'val':
-      with open(data_path + split + '.txt') as f:
-        for line in f:
-          img_path, label = line.split()
-          self.labels.append(int(label))
-          self.imgs.append(data_path + 'images/' + img_path)
-    else:
-      test_path = data_path + 'images/test/'
-      for img in os.listdir(test_path):
-        self.imgs.append(test_path + img)
-      self.imgs = sorted(self.imgs)
-    self.transform = transform
+    with open(data_path + category + '.txt','r') as f:
+      for line in f:
+        path, label = line.split()
+        self.imgs.append(data_path + 'images/' + path)
+        self.labels.append(int(label))
 
-  def __getitem__(self, index):
-    img = imread(self.imgs[index], mode='RGB').astype(float)
-    label = None
-    if len(self.labels) != 0:
-      label = self.labels[index]
-    else:
-      label = -1
-    if self.transform != None:
-      img = self.transform(img)
+  def __getitem__(self, i):
+    img = imread(self.imgs[i], mode='RGB').astype(float)
+    label = self.labels[index]
     return img, label
 
   def __len__(self):
