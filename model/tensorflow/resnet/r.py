@@ -19,7 +19,7 @@ training_iters = 40000
 num_epochs = 30
 display = 20
 best_save = 250
-checkpoint = 100
+checkpoint = 40
 
 
 def validation(model, loader):
@@ -31,7 +31,7 @@ def validation(model, loader):
   top5_correct = 0
 
   for img_batch, label_batch in loader:
-    img_batch = img_batch.cuda()
+    img_batch = Variable(img_batch.cuda())
     output = model(img_batch)
 
     _, predict = torch.max(output.data, 1)
