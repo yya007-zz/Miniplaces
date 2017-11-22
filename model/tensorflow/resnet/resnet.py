@@ -4,6 +4,7 @@ from torchvision import transforms
 from torchvision.models.resnet import resnet18, resnet34, resnet50
 from torch.autograd import Variable
 from DataLoader import *
+from DataLoaderNoise import DataLoaderDiskRandomize
 import time
  
 batch_size = 256
