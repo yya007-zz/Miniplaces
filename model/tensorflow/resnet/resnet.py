@@ -1,11 +1,10 @@
+import os
 import torch
 from torchvision.models.resnet import resnet50
 from torch.autograd import Variable
 from DataLoader import *
 from DataLoaderNoise import DataLoaderDiskRandomize
-# from DataLoader import *
-# from DataLoaderNoise import DataLoaderDiskRandomize
-# import time
+import time
  
 # batch_size = 100
 # load_size = 256
