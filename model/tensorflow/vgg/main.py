@@ -82,7 +82,8 @@ model = vgg_model(x, y, keep_dropout, train_phase)
 
 # Define loss and optimizer
 logits= model.logits
-loss = model.loss
+loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits))
+# loss = model.loss
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
@@ -139,19 +140,11 @@ with tf.Session() as sess:
                 print('[%s]:' %(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
                 # Calculate batch loss and accuracy on training set
-                lo, l, acc1, acc5 = sess.run([logits, loss, accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
+                l, acc1, acc5 = sess.run([loss, accuracy1, accuracy5], feed_dict={x: images_batch, y: labels_batch, keep_dropout: 1., train_phase: False}) 
                 print("-Iter " + str(step) + ", Training Loss= " + \
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
-                
-                print("-------------------------shape-----------------------------------")
-                print(np.array(lo).shape)
-                l = np.array(l)
-                l = l.reshape(l.shape[1:])
-                print(l.shape)
-
-                train_accs.append(acc5)
 
                 # acc1, acc5=validation()
                 # val_accs.append(acc5)
