@@ -1,5 +1,4 @@
-import os
-import torch
+# import torch
 from torchvision.models.resnet import resnet50
 from torch.autograd import Variable
 from DataLoader import *
