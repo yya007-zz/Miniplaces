@@ -20,7 +20,7 @@ display = 50
 best_save = 250
 checkpoint = 1000
 
-def main(args):
+def main():
   train_set = MiniPlaces(data_path, 'train')
   val_set = MiniPlaces(data_path, 'val')
 
