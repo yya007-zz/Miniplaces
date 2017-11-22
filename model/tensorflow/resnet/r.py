@@ -16,6 +16,7 @@ data_path = '../../../data/'
 # Training Parameters
 learning_rate = 0.00001
 training_iters = 40000
+num_epochs = 30
 display = 50
 best_save = 250
 checkpoint = 1000
