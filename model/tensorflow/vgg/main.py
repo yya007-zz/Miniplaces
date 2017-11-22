@@ -83,8 +83,6 @@ model = vgg_model(x, y, keep_dropout, train_phase)
 # Define loss and optimizer
 logits= model.logits
 loss = model.loss
-print("-------------------------shape-----------------------------------")
-print(logits.shape)
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
@@ -146,6 +144,8 @@ with tf.Session() as sess:
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
+                print("-------------------------shape-----------------------------------")
+                print(l.shape)
                 train_accs.append(acc5)
 
                 # acc1, acc5=validation()
