@@ -34,7 +34,7 @@ def main():
   val_loader = DataLoader(val_set, batch_size=batch_size)
 
   model = resnet50(num_classes=100)
-  # model.avgpool = torch.nn.AdaptiveAvgPool2d(1)
+  model.avgpool = torch.nn.AdaptiveAvgPool2d(1)
 
   step = 0
   stats = {'iter': [], 'loss': [], 'checkpoint': [], 'acc1': [], 'acc5':[]}
