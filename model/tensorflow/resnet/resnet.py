@@ -3,10 +3,9 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.models.resnet import resnet18, resnet34, resnet50
 from torch.autograd import Variable
+from DataLoader import *
 import time
-
-from processing import Miniplaces
-
+ 
 batch_size = 256
 load_size = 256
 fine_size = 224
@@ -16,11 +15,12 @@ data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 # Training Parameters
 learning_rate = 0.0001
 training_iters = 40000
+show_every = 50
 
 opt_data_train = {
       #'data_h5': 'miniplaces_256_train.h5',
-      'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-      'data_list': '../../data/train.txt', # MODIFY PATH ACCORDINGLY
+      'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+      'data_list': '../../../data/train.txt', # MODIFY PATH ACCORDINGLY
       'load_size': load_size,
       'fine_size': fine_size,
       'data_mean': data_mean,
@@ -30,8 +30,8 @@ opt_data_train = {
 
   opt_data_val = {
       #'data_h5': 'miniplaces_256_val.h5',
-      'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-      'data_list': '../../data/val.txt',   # MODIFY PATH ACCORDINGLY
+      'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+      'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
       'load_size': load_size,
       'fine_size': fine_size,
       'data_mean': data_mean,
@@ -41,8 +41,8 @@ opt_data_train = {
 
   opt_data_test = {
       #'data_h5': 'miniplaces_256_val.h5',
-      'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-      'data_list': '../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+      'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+      'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
       'load_size': load_size,
       'fine_size': fine_size,
       'data_mean': data_mean,
@@ -67,7 +67,7 @@ def top_k_correct(preds, labels, k):
   topk_idx = preds.topk(k, 1)[1]
   return topk_idx.eq(labels.unsqueeze(1).expand_as(topk_idx)).sum()
 
-def main(args):
+def main():
 # Construct dataloader
   model = resnet50(num_classes=100)
 
@@ -82,11 +82,12 @@ def main(args):
   criterion = criterion.cuda()
 
   model.train()
-  # clock = time.time()
-  count_0 = count
-  best_top5_acc = 0
-  for epoch in range(num_epochs):
-    for img_batch, label_batch in train_loader:
+  clock = time.time()
+
+  step = 0
+  while step < training_iters:
+      # Load a batch of training data
+      img_batch, label_batch = loader_train.next_batch(batch_size)
 
       img_batch = to_var(img_batch)
       label_batch = to_var(label_batch)
@@ -98,57 +99,52 @@ def main(args):
       loss.backward()
       optimizer.step()
 
-      count += 1
+      step += 1
       time_ellapsed = time.time() - clock
 
-      stats['iter'].append(count)
+      stats['iter'].append(step)
       stats['loss'].append(loss.data[0])
       stats['time'].append(time_ellapsed)
 
-      if count % args.show_every == 0:
-        print('running epoch %d. total iteration %d. loss = %.4f. estimated time remaining = %ds'
-         % (epoch+1, count, loss.data[0], int(time_ellapsed * (len(train_set) / args.batch_size * args.num_epochs - count + count_0) / (count - count_0))))
-      if count % args.save_every == 0:
-        top1_acc, top5_acc = check_accuracy(model, val_loader)
-        stats['checkpoints'].append(count)
+      if step % show_every == 0:
+        print('running iteration %d. loss = %.4f.' % (step, loss.data[0]))
+      if step % args.save_every == 0:
+        top1_acc, top5_acc = check_accuracy(model, loader_val, 10000)
+        stats['checkpoints'].append(step)
         stats['top1_accs'].append(top1_acc)
         stats['top5_accs'].append(top5_acc)
         if top5_acc > best_top5_acc:
           print('saving best_model')
           best_top5_acc = top5_acc
           best_model = {
-            'args': args.__dict__,
             'stats': stats,
             'model_state': model.state_dict()
           }
-          torch.save(best_model, args.result_path + 'best_model.pt')
+          torch.save(best_model, 'best_model.pt')
         print('saving checkpoint')
         checkpoint = {
-          'args': args.__dict__,
           'stats': stats,
           'model_state': model.state_dict()
         }
-        torch.save(checkpoint, args.result_path + 'checkpoint.pt')
+        torch.save(checkpoint, 'checkpoint.pt')
         
   result = {
-    'args': args.__dict__,
     'stats': stats,
     'model_state': model.state_dict()
   }
   print('finished training. total iteration = %d. saving result to %s'
-    % (count, args.result_path + 'result.pt'))
-  torch.save(result, args.result_path + 'result.pt')
+    % (step, 'result.pt'))
+  torch.save(result, 'result.pt')
 
-def check_accuracy(model, loader):
+def check_accuracy(model, loader, batch_size):
   print('checking validation accuracy...')
   model.eval()
 
-  total = 0
-  correct_top1 = 0
-  correct_top5 = 0
-  count = 0
-  for img_batch, label_batch in loader:
-    img_batch = to_var(img_batch)
+  num_batch = loader.size()//batch_size+1
+  loader.reset()
+  result=[]
+  for i in range(num_batch):
+    img_batch, label_batch = loader.next_batch(batch_size)
     output = model(img_batch)
     _, pred = torch.max(output.data, 1)
     correct_top1 += torch.sum(pred.cpu() == label_batch)
@@ -163,3 +159,6 @@ def check_accuracy(model, loader):
   print('top 5 accuracy: %.6f' % top5_acc)
   model.train()
   return top1_acc, top5_acc
+
+if __name__ == '__main__':
+  main()
