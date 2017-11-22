@@ -31,7 +31,7 @@ def validation(model, loader):
   top5_correct = 0
 
   for img_batch, label_batch in loader:
-    img_batch = to_var(img_batch)
+    img_batch = img_batch.cuda()
     output = model(img_batch)
 
     _, predict = torch.max(output.data, 1)
