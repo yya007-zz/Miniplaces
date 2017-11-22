@@ -104,8 +104,8 @@ def alexnet(x, keep_dropout, train_phase):
 # Construct dataloader
 opt_data_train = {
     #'data_h5': 'miniplaces_256_train.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/train.txt', # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/train.txt', # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -115,8 +115,8 @@ opt_data_train = {
 
 opt_data_val = {
     #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/val.txt',   # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -126,8 +126,8 @@ opt_data_val = {
 
 opt_data_test = {
     #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+    'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
     'load_size': load_size,
     'fine_size': fine_size,
     'data_mean': data_mean,
@@ -208,7 +208,7 @@ with tf.Session() as sess:
 
                 # Calculate batch loss and accuracy on validation set
                 images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)    
-                l, acc1, acc5 = sess.run([loss, accuracy1, accuracy5], feed_dict={x: images_batch_val, y: labels_batch_val, keep_dropout: 1., train_phase: False}) 
+                lo, l, acc1, acc5 = sess.run([logits, loss, accuracy1, accuracy5], feed_dict={x: images_batch_val, y: labels_batch_val, keep_dropout: 1., train_phase: False}) 
                 print("-Iter " + str(step) + ", Validation Loss= " + \
                       "{:.6f}".format(l) + ", Accuracy Top1 = " + \
                       "{:.4f}".format(acc1) + ", Top5 = " + \
@@ -216,6 +216,7 @@ with tf.Session() as sess:
 
                 val_acc1.append(acc1)
                 val_acc5.append(acc5)
+                print(lo[1])
             
             # Run optimization op (backprop)
             sess.run(train_optimizer, feed_dict={x: images_batch, y: labels_batch, keep_dropout: dropout, train_phase: True})
