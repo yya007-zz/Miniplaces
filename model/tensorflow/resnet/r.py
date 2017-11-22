@@ -21,83 +21,6 @@ display = 50
 best_save = 250
 checkpoint = 1000
 
-def main():
-  transform = transforms.Compose([
-      transforms.ToTensor(),
-      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
-
-  train_set = MiniPlaces(data_path, 'train', transform)
-  val_set = MiniPlaces(data_path, 'val', transform)
-
-  train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-  val_loader = DataLoader(val_set, batch_size=batch_size)
-
-  model = resnet50(num_classes=100)
-  model.avgpool = torch.nn.AdaptiveAvgPool2d(1)
-
-  step = 0
-  stats = {'iter': [], 'loss': [], 'checkpoint': [], 'acc1': [], 'acc5':[]}
-
-  criterion = torch.nn.CrossEntropyLoss()
-  optimizer = torch.optim.Adam(params=model.parameters(), lr=learning_rate)
-
-  model = model.cuda()
-  criterion = criterion.cuda()
-
-  model.train()
-  best = 0.7
-  for epoch in range(num_epochs):
-    for img_batch, label_batch in train_loader:
-
-      img_batch = Variable(img_batch.cuda())
-      label_batch = Variable(label_batch.cuda())
-
-      logits = model(img_batch)
-      loss = criterion(logits, label_batch)
-
-      optimizer.zero_grad()
-      loss.backward()
-      optimizer.step()
-
-      step += 1
-
-      stats['iter'].append(step)
-      stats['loss'].append(loss.data[0])
-
-      if step % display == 0:
-        print('Running epoch %d. iteration %d. loss = %.4f.' % (epoch+1, count, loss.data[0]))
-      
-      if step % best_save == 0:
-        acc1, acc5 = validation(model, val_loader)
-        if acc5 > best:
-          print('saving best model')
-          best = acc5
-          best_model = {
-            'stats': stats,
-            'model': model.state_dict()
-          }
-          torch.save(best_model, 'best_model.pt')
-          print('Saving best model')
-
-      elif step % checkpoint == 0 :
-        acc1, acc5 = validation(model, val_loader)
-        stats['checkpoint'].append(step)
-        stats['acc1'].append(acc1)
-        stats['accs'].append(acc5)
-
-        checkpoint = {
-          'stats': stats,
-          'model_state': model.state_dict()
-        }
-        torch.save(checkpoint, 'checkpoint.pt')
-        
-  result = {
-    'stats': stats,
-    'model_state': model.state_dict()
-  }
-  print('Finished training.')
-  torch.save(result, 'result.pt')
 
 def validation(model, loader):
   print('Checking validation accuracy...')
@@ -124,8 +47,85 @@ def validation(model, loader):
   print('top 1 accuracy: %.6f' % acc1)
   print('top 5 accuracy: %.6f' % acc5)
   model.train()
-
   return acc1, acc5
 
-if __name__ == '__main__':
-  main()
+
+
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+  ])
+
+train_set = MiniPlaces(data_path, 'train', transform)
+val_set = MiniPlaces(data_path, 'val', transform)
+
+train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
+val_loader = DataLoader(val_set, batch_size=batch_size)
+
+model = resnet50(num_classes=100)
+model.avgpool = torch.nn.AdaptiveAvgPool2d(1)
+
+step = 0
+stats = {'iter': [], 'loss': [], 'checkpoint': [], 'acc1': [], 'acc5':[]}
+
+criterion = torch.nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(params=model.parameters(), lr=learning_rate)
+
+model = model.cuda()
+criterion = criterion.cuda()
+
+model.train()
+best = 0.7
+for epoch in range(num_epochs):
+  for img_batch, label_batch in train_loader:
+
+    img_batch = Variable(img_batch.cuda())
+    label_batch = Variable(label_batch.cuda())
+
+    logits = model(img_batch)
+    loss = criterion(logits, label_batch)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    step += 1
+
+    stats['iter'].append(step)
+    stats['loss'].append(loss.data[0])
+
+    if step % display == 0:
+      print('Running epoch %d. iteration %d. loss = %.4f.' % (epoch+1, count, loss.data[0]))
+    
+    if step % best_save == 0:
+      acc1, acc5 = validation(model, val_loader)
+      if acc5 > best:
+        print('saving best model')
+        best = acc5
+        best_model = {
+          'stats': stats,
+          'model': model.state_dict()
+        }
+        torch.save(best_model, 'best_model.pt')
+        print('Saving best model')
+
+    elif step % checkpoint == 0 :
+      acc1, acc5 = validation(model, val_loader)
+      stats['checkpoint'].append(step)
+      stats['acc1'].append(acc1)
+      stats['accs'].append(acc5)
+
+      checkpoint = {
+        'stats': stats,
+        'model_state': model.state_dict()
+      }
+      torch.save(checkpoint, 'checkpoint.pt')
+      
+result = {
+  'stats': stats,
+  'model_state': model.state_dict()
+}
+print('Finished training.')
+torch.save(result, 'result.pt')
+
+
