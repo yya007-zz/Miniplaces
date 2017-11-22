@@ -15,6 +15,8 @@ class MiniPlaces(Dataset):
   def __getitem__(self, i):
     img = imread(self.imgs[i], mode='RGB').astype(float)
     label = self.labels[i]
+    if self.transform != None:
+      img = self.transform(img)
     return img, label
 
   def __len__(self):
