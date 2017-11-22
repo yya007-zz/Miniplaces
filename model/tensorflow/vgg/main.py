@@ -83,6 +83,8 @@ model = vgg_model(x, y, keep_dropout, train_phase)
 # Define loss and optimizer
 logits= model.logits
 loss = model.loss
+print("-------------------------shape-----------------------------------")
+print(logits.shape)
 train_optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
 
 # Evaluate model
