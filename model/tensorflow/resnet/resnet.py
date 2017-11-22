@@ -28,27 +28,27 @@ opt_data_train = {
   'perm' : True
   }
 
-  opt_data_val = {
-    #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
-    'load_size': load_size,
-    'fine_size': fine_size,
-    'data_mean': data_mean,
-    'randomize': False,
-    'perm' : False
-    }
+opt_data_val = {
+  #'data_h5': 'miniplaces_256_val.h5',
+  'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+  'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
+  'load_size': load_size,
+  'fine_size': fine_size,
+  'data_mean': data_mean,
+  'randomize': False,
+  'perm' : False
+  }
 
-  opt_data_test = {
-    #'data_h5': 'miniplaces_256_val.h5',
-    'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
-    'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
-    'load_size': load_size,
-    'fine_size': fine_size,
-    'data_mean': data_mean,
-    'randomize': False,
-    'perm' : False
-    }
+opt_data_test = {
+  #'data_h5': 'miniplaces_256_val.h5',
+  'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+  'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+  'load_size': load_size,
+  'fine_size': fine_size,
+  'data_mean': data_mean,
+  'randomize': False,
+  'perm' : False
+  }
 
 loader_train = DataLoaderDiskRandomize(**opt_data_train)
 loader_val = DataLoaderDisk(**opt_data_val)
