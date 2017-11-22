@@ -17,9 +17,9 @@ data_path = '../../../data/'
 learning_rate = 0.00001
 training_iters = 40000
 num_epochs = 30
-display = 50
+display = 20
 best_save = 250
-checkpoint = 1000
+checkpoint = 100
 
 
 def validation(model, loader):
@@ -95,7 +95,7 @@ for epoch in range(num_epochs):
     stats['loss'].append(loss.data[0])
 
     if step % display == 0:
-      print('Running epoch %d. iteration %d. loss = %.4f.' % (epoch+1, count, loss.data[0]))
+      print('Running epoch %d. iteration %d. loss = %.4f.' % (epoch+1, step, loss.data[0]))
     
     if step % best_save == 0:
       acc1, acc5 = validation(model, val_loader)
