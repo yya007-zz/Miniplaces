@@ -146,6 +146,10 @@ with tf.Session() as sess:
                       "{:.4f}".format(acc5))
                 print("-------------------------shape-----------------------------------")
                 print(np.array(l).shape)
+                l = np.array(l)
+                l = l.reshape(l.shape[1:])
+                print(l.shape)
+                
                 train_accs.append(acc5)
 
                 # acc1, acc5=validation()
