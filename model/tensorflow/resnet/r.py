@@ -113,7 +113,7 @@ for epoch in range(num_epochs):
       acc1, acc5 = validation(model, val_loader)
       stats['checkpoint'].append(step)
       stats['acc1'].append(acc1)
-      stats['accs'].append(acc5)
+      stats['acc5'].append(acc5)
 
       checkpoint = {
         'stats': stats,
