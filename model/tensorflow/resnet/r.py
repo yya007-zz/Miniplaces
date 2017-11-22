@@ -3,8 +3,6 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.models.resnet import resnet18, resnet34, resnet50, resnet101
 from torch.autograd import Variable
-import time
-import argparse
 
 from data_utils import MiniPlaces
 
