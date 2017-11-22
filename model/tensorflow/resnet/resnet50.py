@@ -4,14 +4,10 @@ from torchvision import transforms
 from torchvision.models.resnet import resnet18, resnet34, resnet50, resnet101
 from torch.autograd import Variable
 
-from data_utils import MiniPlaces
+from processing import MiniPlaces
 
 batch_size = 100
-load_size = 256
-fine_size = 224
-c = 3
 data_path = '../../../data/'
-# data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.00001
