@@ -19,7 +19,7 @@ training_iters = 40000
 num_epochs = 30
 display = 20
 best_save = 250
-checkpoint = 40
+checkpoint = 20
 
 
 def validation(model, loader):
@@ -37,7 +37,7 @@ def validation(model, loader):
     _, predict = torch.max(output.data, 1)
     top1_correct += torch.sum(predict.cpu() == label_batch)
 
-    predict5 = output.data.topk(5, 1)[1]
+    predict5 = output.data.cpu().topk(5, 1)[1]
     top5_correct += predict5.eq(label_batch.unsqueeze(1).expand_as(predict5)).sum()
 
     total += label_batch.size(0)
