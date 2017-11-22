@@ -13,7 +13,7 @@ class MiniPlaces(Dataset):
 
   def __getitem__(self, i):
     img = imread(self.imgs[i], mode='RGB').astype(float)
-    label = self.labels[index]
+    label = self.labels[i]
     return img, label
 
   def __len__(self):
