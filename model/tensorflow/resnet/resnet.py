@@ -1,5 +1,4 @@
 import torch
-from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.models.resnet import resnet18, resnet34, resnet50
 from torch.autograd import Variable
@@ -70,7 +69,6 @@ def top_k_correct(preds, labels, k):
 
 def main():
 # Construct dataloader
-  print('1')
   model = resnet50(num_classes=100)
 
   count = 0
@@ -78,14 +76,14 @@ def main():
 
   criterion = torch.nn.CrossEntropyLoss()
   optimizer = torch.optim.Adam(params=model.parameters(), lr=learning_rate)
-  print('11')
+
   model = model.cuda()
   model = torch.nn.DataParallel(model)
   criterion = criterion.cuda()
 
   model.train()
   clock = time.time()
-  print('111')
+
   step = 0
   while step < training_iters:
       # Load a batch of training data
@@ -93,7 +91,6 @@ def main():
 
       img_batch = to_var(img_batch)
       label_batch = to_var(label_batch)
-      print('11111')
 
       logits = model(img_batch)
       loss = criterion(logits, label_batch)
@@ -163,5 +160,8 @@ def check_accuracy(model, loader, batch_size):
   model.train()
   return top1_acc, top5_acc
 
+def main_sudo()
+  print("worked")
+
 if __name__ == '__main__':
-  main()
+  main_sudo()
