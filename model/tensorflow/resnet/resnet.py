@@ -160,7 +160,7 @@ def check_accuracy(model, loader, batch_size):
   model.train()
   return top1_acc, top5_acc
 
-def main_sudo()
+def main_sudo():
   print("worked")
 
 if __name__ == '__main__':
