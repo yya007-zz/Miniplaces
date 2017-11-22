@@ -6,53 +6,53 @@ from DataLoader import *
 from DataLoaderNoise import DataLoaderDiskRandomize
 import time
  
-batch_size = 100
-load_size = 256
-fine_size = 224
-c = 3
-data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
+# batch_size = 100
+# load_size = 256
+# fine_size = 224
+# c = 3
+# data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
-# Training Parameters
-learning_rate = 0.0001
-training_iters = 40000
-show_every = 50
+# # Training Parameters
+# learning_rate = 0.0001
+# training_iters = 40000
+# show_every = 50
 
-opt_data_train = {
-  #'data_h5': 'miniplaces_256_train.h5',
-  'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
-  'data_list': '../../../data/train.txt', # MODIFY PATH ACCORDINGLY
-  'load_size': load_size,
-  'fine_size': fine_size,
-  'data_mean': data_mean,
-  'randomize': True,
-  'perm' : True
-  }
+# opt_data_train = {
+#   #'data_h5': 'miniplaces_256_train.h5',
+#   'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+#   'data_list': '../../../data/train.txt', # MODIFY PATH ACCORDINGLY
+#   'load_size': load_size,
+#   'fine_size': fine_size,
+#   'data_mean': data_mean,
+#   'randomize': True,
+#   'perm' : True
+#   }
 
-opt_data_val = {
-  #'data_h5': 'miniplaces_256_val.h5',
-  'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
-  'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
-  'load_size': load_size,
-  'fine_size': fine_size,
-  'data_mean': data_mean,
-  'randomize': False,
-  'perm' : False
-  }
+# opt_data_val = {
+#   #'data_h5': 'miniplaces_256_val.h5',
+#   'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+#   'data_list': '../../../data/val.txt',   # MODIFY PATH ACCORDINGLY
+#   'load_size': load_size,
+#   'fine_size': fine_size,
+#   'data_mean': data_mean,
+#   'randomize': False,
+#   'perm' : False
+#   }
 
-opt_data_test = {
-  #'data_h5': 'miniplaces_256_val.h5',
-  'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
-  'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
-  'load_size': load_size,
-  'fine_size': fine_size,
-  'data_mean': data_mean,
-  'randomize': False,
-  'perm' : False
-  }
+# opt_data_test = {
+#   #'data_h5': 'miniplaces_256_val.h5',
+#   'data_root': '../../../data/images/',   # MODIFY PATH ACCORDINGLY
+#   'data_list': '../../../data/test.txt',   # MODIFY PATH ACCORDINGLY
+#   'load_size': load_size,
+#   'fine_size': fine_size,
+#   'data_mean': data_mean,
+#   'randomize': False,
+#   'perm' : False
+#   }
 
-loader_train = DataLoaderDiskRandomize(**opt_data_train)
-loader_val = DataLoaderDisk(**opt_data_val)
-loader_test = DataLoaderDisk(**opt_data_test)
+# loader_train = DataLoaderDiskRandomize(**opt_data_train)
+# loader_val = DataLoaderDisk(**opt_data_val)
+# loader_test = DataLoaderDisk(**opt_data_test)
 
 # def to_var(x):
 #   if torch.cuda.is_available():
