@@ -19,7 +19,7 @@ training_iters = 40000
 num_epochs = 30
 display = 20
 best_save = 250
-checkpoint = 20
+step_save = 20
 
 
 def validation(model, loader):
@@ -109,7 +109,7 @@ for epoch in range(num_epochs):
         torch.save(best_model, 'best_model.pt')
         print('Saving best model')
 
-    elif step % checkpoint == 0 :
+    elif step % step_save == 0 :
       acc1, acc5 = validation(model, val_loader)
       stats['checkpoint'].append(step)
       stats['acc1'].append(acc1)
