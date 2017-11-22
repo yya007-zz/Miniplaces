@@ -145,7 +145,7 @@ with tf.Session() as sess:
                       "{:.4f}".format(acc1) + ", Top5 = " + \
                       "{:.4f}".format(acc5))
                 print("-------------------------shape-----------------------------------")
-                print(l.shape)
+                print(np.array(l).shape)
                 train_accs.append(acc5)
 
                 # acc1, acc5=validation()
