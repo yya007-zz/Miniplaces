@@ -11,14 +11,14 @@ load_size = 256
 fine_size = 224
 c = 3
 data_path = '../../../data/'
-data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
+# data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
 
 # Training Parameters
 learning_rate = 0.00001
 training_iters = 40000
 display = 50
-checkpoint = 1000
 best_save = 250
+checkpoint = 1000
 
 def main(args):
   train_set = MiniPlaces(data_path, 'train')
