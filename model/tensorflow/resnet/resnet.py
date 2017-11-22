@@ -7,7 +7,7 @@ from DataLoader import *
 from DataLoaderNoise import DataLoaderDiskRandomize
 import time
  
-batch_size = 256
+batch_size = 100
 load_size = 256
 fine_size = 224
 c = 3
