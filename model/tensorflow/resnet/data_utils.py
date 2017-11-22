@@ -2,7 +2,7 @@ from torch.utils.data import Dataset
 from scipy.misc import imread
 
 class MiniPlaces(Dataset):
-  def __init__(self, data_path, category):
+  def __init__(self, data_path, category, transform=None):
     self.imgs = []
     self.labels = []
     with open(data_path + category + '.txt','r') as f:
