@@ -22,8 +22,13 @@ best_save = 250
 checkpoint = 1000
 
 def main():
-  train_set = MiniPlaces(data_path, 'train')
-  val_set = MiniPlaces(data_path, 'val')
+  transform = transforms.Compose([
+      transforms.ToTensor(),
+      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+
+  train_set = MiniPlaces(data_path, 'train', transform)
+  val_set = MiniPlaces(data_path, 'val', transform)
 
   train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
   val_loader = DataLoader(val_set, batch_size=batch_size)
