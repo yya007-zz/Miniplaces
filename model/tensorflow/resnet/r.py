@@ -80,7 +80,7 @@ def main():
           torch.save(best_model, 'best_model.pt')
           print('Saving best model')
 
-      elif count % checkpoint == 0 :
+      elif step % checkpoint == 0 :
         acc1, acc5 = validation(model, val_loader)
         stats['checkpoint'].append(step)
         stats['acc1'].append(acc1)
