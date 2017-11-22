@@ -19,7 +19,7 @@ training_iters = 40000
 num_epochs = 30
 display = 20
 best_save = 250
-step_save = 20
+step_save = 1000
 
 
 def validation(model, loader):
@@ -127,5 +127,3 @@ result = {
 }
 print('Finished training.')
 torch.save(result, 'result.pt')
-
-
