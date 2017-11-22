@@ -38,7 +38,7 @@ def validation(model, loader):
     top1_correct += torch.sum(predict.cpu() == label_batch)
 
     predict5 = output.data.topk(5, 1)[1]
-    correct_top5 += predict5.eq(label_batch.unsqueeze(1).expand_as(predict5)).sum()
+    top5_correct += predict5.eq(label_batch.unsqueeze(1).expand_as(predict5)).sum()
 
     total += label_batch.size(0)
 
