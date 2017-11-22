@@ -10,6 +10,7 @@ class MiniPlaces(Dataset):
         path, label = line.split()
         self.imgs.append(data_path + 'images/' + path)
         self.labels.append(int(label))
+    self.transform = transform
 
   def __getitem__(self, i):
     img = imread(self.imgs[i], mode='RGB').astype(float)
